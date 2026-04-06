@@ -1,0 +1,13 @@
+analyzer:
+  errors:
+    empty_catches: ignore
+    invalid_annotation_target: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Uncomment rules as needed
+    # avoid_print: false
+    # prefer_single_quotes: true

@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "MnB: MatchNBuild",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading text"
+  }
+}

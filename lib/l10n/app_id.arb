@@ -1,0 +1,11 @@
+{
+  "@@locale": "id",
+  "appTitle": "MnB: MatchNBuild",
+  "@appTitle": {
+    "description": "Judul aplikasi"
+  },
+  "loading": "Memuat...",
+  "@loading": {
+    "description": "Teks loading"
+  }
+}
