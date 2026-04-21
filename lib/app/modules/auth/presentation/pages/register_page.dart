@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
+import 'package:mnb_mobile/tool/modular_routes.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -27,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onRegister() {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement register logic
+      Modular.to.pushNamed(ModularRoutes.path(ModularRoutes.authChooseRole));
     }
   }
 
@@ -35,114 +37,128 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset('assets/png/logo-app.png'),
-              Text(
-                "Design Your Legacy",
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontStyle: GoogleFonts.ptSerif().fontStyle,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "Discover curated furniture pieces that transform your house into a dream home",
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontStyle: GoogleFonts.ptSerif().fontStyle,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text("Sign Up", style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-
-              SizedBox(
-                width: double.infinity,
-                child: GestureDetector(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: ChakraColors.black,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Login',
-                      style: Theme.of(context).textTheme.headlineSmall!
-                          .copyWith(color: ChakraColors.white),
-                    ),
+      body: BaseBodyPage(
+        children: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset('assets/png/logo-app.png'),
+                      Text(
+                        "Design Your Legacy",
+                        style: Theme.of(context).textTheme.displayMedium!
+                            .copyWith(
+                              fontStyle: GoogleFonts.ptSerif().fontStyle,
+                              fontWeight: FontWeight.normal,
+                            ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Discover curated furniture pieces that transform your house into a dream home",
+                        style: Theme.of(context).textTheme.titleLarge!
+                            .copyWith(
+                              fontStyle: GoogleFonts.ptSerif().fontStyle,
+                              fontWeight: FontWeight.normal,
+                            ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Sign Up",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Confirm Password',
+                          border: OutlineInputBorder(),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: GestureDetector(
+                          onTap: _onRegister,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color: ChakraColors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Daftar',
+                              style: Theme.of(context).textTheme.headlineSmall!
+                                  .copyWith(color: ChakraColors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
