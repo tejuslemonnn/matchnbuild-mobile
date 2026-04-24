@@ -6,7 +6,6 @@ import 'package:mnb_mobile/app/modules/auth/domain/repository/auth_repository.da
 import 'package:mnb_mobile/app/modules/auth/domain/usecase/login_use_case.dart';
 import 'package:mnb_mobile/app/modules/auth/domain/usecase/logout_use_case.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/controller/auth_bloc.dart';
-import 'package:mnb_mobile/app/modules/auth/presentation/pages/choose_role_page.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/pages/login_page.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/pages/register_page.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/pages/style_preferences_page.dart';
@@ -50,10 +49,6 @@ class AuthModule extends Module {
     r.child(
       ModularRoutes.path(ModularRoutes.authRegister),
       child: (context) => const RegisterPage(),
-    );
-    r.child(
-      ModularRoutes.path(ModularRoutes.authChooseRole),
-      child: (context) => const ChooseRolePage(),
     );
     r.child(
       ModularRoutes.path(ModularRoutes.authStylePreferences),

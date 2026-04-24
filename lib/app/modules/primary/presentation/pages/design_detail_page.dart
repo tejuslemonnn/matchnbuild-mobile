@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
@@ -24,7 +25,7 @@ class DesignDetailPage extends StatelessWidget {
             vertical: 8,
           ),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () => Modular.to.pushNamed('./price-request'),
             style: ElevatedButton.styleFrom(
               backgroundColor: ChakraColors.black,
               foregroundColor: ChakraColors.white,

@@ -3,6 +3,11 @@ import 'package:mnb_mobile/app/modules/primary/presentation/pages/design_detail_
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/designer_detail_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/home_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/message_detail_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/order_review_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/payment_method_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/payment_success_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/price_request_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/quote_summary_page.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
 
 class PrimaryModule extends Module {
@@ -25,6 +30,26 @@ class PrimaryModule extends Module {
     r.child(
       ModularRoutes.path(ModularRoutes.primaryMessageDetail),
       child: (context) => const MessageDetailPage(),
+    );
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryPriceRequest),
+      child: (context) => const PriceRequestPage(),
+    );
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryQuoteSummary),
+      child: (context) => const QuoteSummaryPage(),
+    );
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryOrderReview),
+      child: (context) => const OrderReviewPage(),
+    );
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryPaymentMethod),
+      child: (context) => const PaymentMethodPage(),
+    );
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryPaymentSuccess),
+      child: (context) => const PaymentSuccessPage(),
     );
   }
 }

@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onRegister() {
     if (_formKey.currentState!.validate()) {
-      Modular.to.pushNamed(ModularRoutes.path(ModularRoutes.authChooseRole));
+      print('Registering with:');
     }
   }
 
@@ -60,11 +60,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(height: 16),
                       Text(
                         "Discover curated furniture pieces that transform your house into a dream home",
-                        style: Theme.of(context).textTheme.titleLarge!
-                            .copyWith(
-                              fontStyle: GoogleFonts.ptSerif().fontStyle,
-                              fontWeight: FontWeight.normal,
-                            ),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontStyle: GoogleFonts.ptSerif().fontStyle,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
