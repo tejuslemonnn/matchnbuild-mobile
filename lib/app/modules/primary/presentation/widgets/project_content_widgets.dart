@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/theme/colors.dart';
+import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class ProjectCardData {
   const ProjectCardData({
@@ -9,6 +10,7 @@ class ProjectCardData {
     required this.designer,
     required this.totalCost,
     required this.actionLabel,
+    this.imageSeed = '',
   });
 
   final String status;
@@ -16,6 +18,7 @@ class ProjectCardData {
   final String designer;
   final String totalCost;
   final String actionLabel;
+  final String imageSeed;
 }
 
 class ProjectStatusCard extends StatelessWidget {
@@ -124,9 +127,20 @@ class ProjectStatusCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Image.asset(
-                  'assets/png/sitting-room.png',
-                  fit: BoxFit.contain,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image(
+                    image: networkOrPlaceholder(
+                      null,
+                      seed: data.imageSeed.isEmpty
+                          ? data.title
+                          : data.imageSeed,
+                      width: 300,
+                      height: 220,
+                    ),
+                    fit: BoxFit.cover,
+                    height: 90,
+                  ),
                 ),
               ),
             ],

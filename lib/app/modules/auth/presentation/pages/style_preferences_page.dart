@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mnb_mobile/app/modules/primary/data/datasource/primary_remote_datasource.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/controller/preferences_cubit.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
@@ -24,46 +28,105 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
     ('Contemporary', 'assets/png/sitting-room.png'),
   ];
 
+  final _cubit = Modular.get<PreferencesCubit>();
   final Set<String> _selectedStyles = {'Minimalist'};
-  final _budgetController = TextEditingController();
+  final _budgetMinController = TextEditingController();
+  final _budgetMaxController = TextEditingController();
   final _locationController = TextEditingController();
-  String? _buildingType = 'Residential';
 
   @override
   void dispose() {
-    _budgetController.dispose();
+    _budgetMinController.dispose();
+    _budgetMaxController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  void _save() {
+    if (_selectedStyles.isEmpty) {
+      _showError('Pilih minimal satu gaya.');
+      return;
+    }
+
+    final budgetMin = double.tryParse(_budgetMinController.text.trim()) ?? 0;
+    final budgetMax = double.tryParse(_budgetMaxController.text.trim()) ?? 0;
+
+    if (budgetMin <= 0 || budgetMax <= 0) {
+      _showError('Budget minimum dan maksimum harus lebih dari 0.');
+      return;
+    }
+
+    if (_locationController.text.trim().isEmpty) {
+      _showError('Lokasi wajib diisi.');
+      return;
+    }
+
+    _cubit.create(
+      CreatePreferenceRequest(
+        preferredStyle: _selectedStyles.first.toLowerCase(),
+        budgetMin: budgetMin,
+        budgetMax: budgetMax,
+        preferredLocation: _locationController.text.trim(),
+      ),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () => Modular.to.navigate(ModularRoutes.primary),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ChakraColors.black,
-              foregroundColor: ChakraColors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
+      bottomNavigationBar: BlocConsumer<PreferencesCubit, PreferencesState>(
+        bloc: _cubit,
+        listener: (context, state) {
+          if (state.saved) {
+            Modular.to.navigate(ModularRoutes.primary);
+          } else if (state.status.isFailure) {
+            _showError(state.message);
+          }
+        },
+        builder: (context, state) {
+          final loading = state.status.isLoading;
+          return SafeArea(
+            minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: loading ? null : _save,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ChakraColors.black,
+                  foregroundColor: ChakraColors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: loading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: ChakraColors.white,
+                        ),
+                      )
+                    : Text(
+                        'Save & View Recommendations',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontStyle: GoogleFonts.inter().fontStyle,
+                          fontWeight: FontWeight.w700,
+                          color: ChakraColors.white,
+                        ),
+                      ),
               ),
             ),
-            child: Text(
-              'Save & View Recommendations',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontStyle: GoogleFonts.inter().fontStyle,
-                fontWeight: FontWeight.w700,
-                color: ChakraColors.white,
-              ),
-            ),
-          ),
-        ),
+          );
+        },
       ),
       body: BaseBodyPage(
         children: [
@@ -98,14 +161,15 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
                         itemCount: _styles.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: .82,
-                            ),
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: .82,
+                        ),
                         itemBuilder: (context, index) {
                           final style = _styles[index];
-                          final isSelected = _selectedStyles.contains(style.$1);
+                          final isSelected =
+                              _selectedStyles.contains(style.$1);
 
                           return InkWell(
                             onTap: () {
@@ -135,7 +199,8 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
                                   Expanded(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.vertical(
+                                        borderRadius:
+                                            const BorderRadius.vertical(
                                           top: Radius.circular(16),
                                         ),
                                         image: DecorationImage(
@@ -178,36 +243,20 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue: _buildingType,
+                    TextFormField(
+                      controller: _budgetMinController,
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        labelText: 'Building Type',
+                        labelText: 'Budget Minimum (Rupiah)',
                         border: OutlineInputBorder(),
                       ),
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'Residential',
-                          child: Text('Residential'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Commercial',
-                          child: Text('Commercial'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Office',
-                          child: Text('Office'),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() => _buildingType = value);
-                      },
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      controller: _budgetController,
+                      controller: _budgetMaxController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        labelText: 'Estimation Budget (Rupiah)',
+                        labelText: 'Budget Maksimum (Rupiah)',
                         border: OutlineInputBorder(),
                       ),
                     ),

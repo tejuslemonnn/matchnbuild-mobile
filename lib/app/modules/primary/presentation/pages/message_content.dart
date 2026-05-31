@@ -4,6 +4,8 @@ import 'package:mnb_mobile/app/modules/primary/presentation/widgets/message_cont
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 
+// TODO(api): Tidak ada endpoint messaging/conversation di backend (lihat
+// api.md). Daftar chat masih memakai data dummy sampai API tersedia.
 class MessageContent extends StatelessWidget {
   const MessageContent({super.key});
 

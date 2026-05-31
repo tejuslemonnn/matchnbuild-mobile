@@ -34,6 +34,26 @@ class AuthRepositoryImpl extends BaseRepository implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> register({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  }) async {
+    try {
+      await _remoteDatasource.register(
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(ApiFailure(error: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> logout() async {
     try {
       await _localDatasource.deleteToken();

@@ -17,7 +17,7 @@ class AppModule extends Module {
 
     // App Controller
     i.addLazySingleton<AppControllerBloc>(
-      () => AppControllerBloc(i.get<AuthLocalDatasource>()),
+      () => AppControllerBloc(i.get<AuthLocalDatasource>(), i.get<DioClient>()),
     );
   }
 

@@ -4,6 +4,12 @@ import 'package:mnb_mobile/services/error/failure.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, TokenAuth>> login(String email, String password);
+  Future<Either<Failure, void>> register({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  });
   Future<Either<Failure, void>> logout();
   Future<TokenAuth?> getToken();
   Future<bool> isLoggedIn();

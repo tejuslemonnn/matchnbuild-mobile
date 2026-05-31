@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/theme/colors.dart';
+import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class DesignerListItem extends StatelessWidget {
   const DesignerListItem({
@@ -8,11 +9,15 @@ class DesignerListItem extends StatelessWidget {
     required this.name,
     required this.location,
     required this.onTap,
+    this.imageUrl,
+    this.seed = '',
   });
 
   final String name;
   final String location;
   final VoidCallback onTap;
+  final String? imageUrl;
+  final String seed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,13 @@ class DesignerListItem extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .125,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
-                image: const DecorationImage(
-                  image: AssetImage('assets/png/sitting-room.png'),
+                image: DecorationImage(
+                  image: networkOrPlaceholder(
+                    imageUrl,
+                    seed: seed.isEmpty ? name : seed,
+                    width: 300,
+                    height: 300,
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),

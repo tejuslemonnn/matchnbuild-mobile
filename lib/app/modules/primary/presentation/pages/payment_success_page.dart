@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
 
+// TODO(api): Tidak ada endpoint payment di backend (lihat api.md).
+// Halaman sukses ini murni UI sampai API pembayaran tersedia.
 class PaymentSuccessPage extends StatelessWidget {
   const PaymentSuccessPage({super.key});
 

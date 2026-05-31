@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 
+// TODO(api): Tidak ada endpoint payment/order di backend (lihat api.md).
+// Pemilihan metode pembayaran masih dummy; quotation accept (PUT
+// /quotation/:id/accept) sudah menghasilkan order_id di OrderReviewPage.
 class PaymentMethodPage extends StatefulWidget {
   const PaymentMethodPage({super.key});
 

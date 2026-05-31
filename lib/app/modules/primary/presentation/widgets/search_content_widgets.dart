@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mnb_mobile/app/widgets/glass_container.dart';
+import 'package:mnb_mobile/app/modules/primary/data/model/design_item_model.dart';
 import 'package:mnb_mobile/theme/colors.dart';
+import 'package:mnb_mobile/tool/currency.dart';
+import 'package:mnb_mobile/tool/modular_routes.dart';
+import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class SearchCategoryBadge extends StatelessWidget {
   const SearchCategoryBadge({
@@ -75,33 +79,49 @@ class SectionHeader extends StatelessWidget {
 }
 
 class SearchTrendingCard extends StatelessWidget {
-  const SearchTrendingCard({super.key});
+  const SearchTrendingCard({super.key, required this.item});
+
+  final DesignItemModel item;
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final cardHeight = mediaQuery.size.height * .2;
     final cardWidth = mediaQuery.size.width * .65;
+    final subtitle = [
+      if (item.designerName != null) 'Oleh ${item.designerName}',
+      if (item.location != null) item.location,
+    ].join(' • ');
 
-    return SizedBox(
-      width: mediaQuery.size.width * .65,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  height: cardHeight,
-                  width: cardWidth,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/png/sitting-room.png'),
-                      fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => Modular.to.pushNamed(
+        ModularRoutes.path(ModularRoutes.primaryDesignDetail),
+        arguments: item.id,
+      ),
+      child: SizedBox(
+        width: mediaQuery.size.width * .65,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Container(
+                    height: cardHeight,
+                    width: cardWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      image: DecorationImage(
+                        image: networkOrPlaceholder(
+                          item.imageUrl,
+                          seed: item.id,
+                          width: 600,
+                          height: 400,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
@@ -147,7 +167,9 @@ class SearchTrendingCard extends StatelessWidget {
                           ),
 
                           Text(
-                            "Rumah Kaca Tropis",
+                            item.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.bodyMedium!
                                 .copyWith(
                                   fontStyle: GoogleFonts.inter().fontStyle,
@@ -156,7 +178,9 @@ class SearchTrendingCard extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            "Oleh Studio Arsitek Budi • Jakarta Selatan",
+                            subtitle.isEmpty ? (item.style ?? '') : subtitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.bodySmall!
                                 .copyWith(
                                   fontStyle: GoogleFonts.inter().fontStyle,
@@ -172,85 +196,97 @@ class SearchTrendingCard extends StatelessWidget {
               ],
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
 class LatestInspirationCard extends StatelessWidget {
-  const LatestInspirationCard({super.key});
+  const LatestInspirationCard({super.key, required this.item});
+
+  final DesignItemModel item;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: ChakraColors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ChakraColors.gray200),
+    final price = item.priceStartFrom ?? item.estimatedBudget;
+
+    return GestureDetector(
+      onTap: () => Modular.to.pushNamed(
+        ModularRoutes.path(ModularRoutes.primaryDesignDetail),
+        arguments: item.id,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12),
-                ),
-                image: const DecorationImage(
-                  image: AssetImage('assets/png/sitting-room.png'),
-                  fit: BoxFit.cover,
+      child: Container(
+        decoration: BoxDecoration(
+          color: ChakraColors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: ChakraColors.gray200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
+                  ),
+                  image: DecorationImage(
+                    image: networkOrPlaceholder(
+                      item.imageUrl,
+                      seed: item.id,
+                      width: 400,
+                      height: 400,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Modern Minimalist',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontStyle: GoogleFonts.inter().fontStyle,
-                    fontWeight: FontWeight.bold,
-                    color: ChakraColors.black,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.star_rounded,
-                      size: 16,
-                      color: ChakraColors.yellow500,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontStyle: GoogleFonts.inter().fontStyle,
+                      fontWeight: FontWeight.bold,
+                      color: ChakraColors.black,
                     ),
-                    const SizedBox(width: 2),
-                    Text(
-                      '4.8',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontStyle: GoogleFonts.inter().fontStyle,
-                        color: ChakraColors.gray500,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Mulai Rp. 45jt',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontStyle: GoogleFonts.inter().fontStyle,
-                    fontWeight: FontWeight.w700,
-                    color: ChakraColors.black,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    item.style ?? item.category ?? '-',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontStyle: GoogleFonts.inter().fontStyle,
+                      color: ChakraColors.gray500,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    price != null ? 'Mulai ${formatRupiah(price)}' : 'Hubungi designer',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontStyle: GoogleFonts.inter().fontStyle,
+                      fontWeight: FontWeight.w700,
+                      color: ChakraColors.black,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

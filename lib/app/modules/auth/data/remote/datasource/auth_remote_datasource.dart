@@ -3,12 +3,36 @@ import 'package:mnb_mobile/services/api.dart';
 
 abstract class AuthRemoteDatasource {
   Future<TokenAuth> login(String email, String password);
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  });
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   final DioClient _dioClient;
 
   AuthRemoteDatasourceImpl(this._dioClient);
+
+  @override
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  }) async {
+    await _dioClient.post(
+      '/auth/register',
+      data: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'role': role,
+      },
+    );
+  }
 
   @override
   Future<TokenAuth> login(String email, String password) async {
