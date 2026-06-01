@@ -6,7 +6,6 @@ import 'package:mnb_mobile/app/modules/primary/presentation/controller/designer_
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class DesignerDetailPage extends StatefulWidget {
   const DesignerDetailPage({super.key, this.designerId});
@@ -103,12 +102,12 @@ class _DesignerDetailPageState extends State<DesignerDetailPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(55),
                                     image: DecorationImage(
-                                      image: networkOrPlaceholder(
-                                        picture,
-                                        seed: designer.id,
-                                        width: 220,
-                                        height: 220,
-                                      ),
+                                      image: (picture != null &&
+                                              picture.isNotEmpty)
+                                          ? NetworkImage(picture)
+                                          : const AssetImage(
+                                                  'assets/png/sitting-room.png')
+                                              as ImageProvider,
                                       fit: BoxFit.cover,
                                     ),
                                   ),

@@ -35,7 +35,6 @@ class _ProjectContentState extends State<ProjectContent> {
       designer: 'Designer',
       totalCost: formatRupiah(request.initialBudget),
       actionLabel: _actionLabel(request.status),
-      imageSeed: request.id,
     );
   }
 

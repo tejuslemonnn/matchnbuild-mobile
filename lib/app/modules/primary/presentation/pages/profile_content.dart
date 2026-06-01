@@ -10,7 +10,6 @@ import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/services/api.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class ProfileContent extends StatefulWidget {
   const ProfileContent({super.key});
@@ -137,12 +136,11 @@ class _ProfileContentState extends State<ProfileContent> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(52),
                                 image: DecorationImage(
-                                  image: networkOrPlaceholder(
-                                    picture,
-                                    seed: user?.id ?? 'profile',
-                                    width: 220,
-                                    height: 220,
-                                  ),
+                                  image: (picture != null && picture.isNotEmpty)
+                                      ? NetworkImage(picture)
+                                      : const AssetImage(
+                                              'assets/png/sitting-room.png')
+                                          as ImageProvider,
                                   fit: BoxFit.cover,
                                 ),
                               ),

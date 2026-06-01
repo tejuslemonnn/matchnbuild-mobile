@@ -6,7 +6,6 @@ import 'package:mnb_mobile/app/widgets/glass_container.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/currency.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class DesignSection extends StatelessWidget {
   const DesignSection({
@@ -117,12 +116,10 @@ class DesignShowcaseCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               image: DecorationImage(
-                image: networkOrPlaceholder(
-                  item.imageUrl,
-                  seed: item.id,
-                  width: 400,
-                  height: 400,
-                ),
+                image: (item.imageUrl != null && item.imageUrl!.isNotEmpty)
+                    ? NetworkImage(item.imageUrl!)
+                    : const AssetImage('assets/png/sitting-room.png')
+                        as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),

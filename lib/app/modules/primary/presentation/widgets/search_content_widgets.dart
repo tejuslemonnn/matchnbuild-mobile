@@ -5,7 +5,6 @@ import 'package:mnb_mobile/app/modules/primary/data/model/design_item_model.dart
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/currency.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class SearchCategoryBadge extends StatelessWidget {
   const SearchCategoryBadge({
@@ -88,6 +87,7 @@ class SearchTrendingCard extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final cardHeight = mediaQuery.size.height * .2;
     final cardWidth = mediaQuery.size.width * .65;
+    final hasImage = item.imageUrl != null && item.imageUrl!.isNotEmpty;
     final subtitle = [
       if (item.designerName != null) 'Oleh ${item.designerName}',
       if (item.location != null) item.location,
@@ -112,12 +112,10 @@ class SearchTrendingCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       image: DecorationImage(
-                        image: networkOrPlaceholder(
-                          item.imageUrl,
-                          seed: item.id,
-                          width: 600,
-                          height: 400,
-                        ),
+                        image: hasImage
+                            ? NetworkImage(item.imageUrl!)
+                            : const AssetImage('assets/png/sitting-room.png')
+                                as ImageProvider,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -210,6 +208,7 @@ class LatestInspirationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = item.imageUrl != null && item.imageUrl!.isNotEmpty;
     final price = item.priceStartFrom ?? item.estimatedBudget;
 
     return GestureDetector(
@@ -234,12 +233,10 @@ class LatestInspirationCard extends StatelessWidget {
                     top: Radius.circular(12),
                   ),
                   image: DecorationImage(
-                    image: networkOrPlaceholder(
-                      item.imageUrl,
-                      seed: item.id,
-                      width: 400,
-                      height: 400,
-                    ),
+                    image: hasImage
+                        ? NetworkImage(item.imageUrl!)
+                        : const AssetImage('assets/png/sitting-room.png')
+                            as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                 ),

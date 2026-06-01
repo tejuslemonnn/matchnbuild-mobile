@@ -8,7 +8,6 @@ import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/currency.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class DesignDetailPage extends StatefulWidget {
   const DesignDetailPage({super.key, this.designItemId});
@@ -70,6 +69,7 @@ class _DesignDetailPageState extends State<DesignDetailPage> {
 
           final item = state.item!;
           final price = item.priceStartFrom ?? item.estimatedBudget;
+          final hasImage = item.imageUrl != null && item.imageUrl!.isNotEmpty;
 
           return Scaffold(
             bottomNavigationBar: SafeArea(
@@ -127,12 +127,11 @@ class _DesignDetailPageState extends State<DesignDetailPage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                image: networkOrPlaceholder(
-                                  item.imageUrl,
-                                  seed: item.id,
-                                  width: 800,
-                                  height: 600,
-                                ),
+                                image: hasImage
+                                    ? NetworkImage(item.imageUrl!)
+                                    : const AssetImage(
+                                            'assets/png/sitting-room.png')
+                                        as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -200,17 +199,12 @@ class _DesignDetailPageState extends State<DesignDetailPage> {
                                 Container(
                                   width: 56,
                                   height: 56,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(28),
-                                    ),
+                                  decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(28)),
                                     image: DecorationImage(
-                                      image: networkOrPlaceholder(
-                                        null,
-                                        seed: item.designerId ??
-                                            '${item.id}-designer',
-                                        width: 120,
-                                        height: 120,
+                                      image: AssetImage(
+                                        'assets/png/sitting-room.png',
                                       ),
                                       fit: BoxFit.cover,
                                     ),

@@ -10,7 +10,6 @@ import 'package:mnb_mobile/app/widgets/base_body_page.dart';
 import 'package:mnb_mobile/app/widgets/glass_container.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
-import 'package:mnb_mobile/tool/placeholder_image.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -52,13 +51,8 @@ class _HomeContentState extends State<HomeContent> {
                     height: MediaQuery.of(context).size.height * .2,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      image: DecorationImage(
-                        image: networkOrPlaceholder(
-                          null,
-                          seed: 'home-hero',
-                          width: 800,
-                          height: 400,
-                        ),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/png/sitting-room.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -103,7 +97,6 @@ class _HomeContentState extends State<HomeContent> {
                                   name: designer.name,
                                   location: designer.location ?? '-',
                                   imageUrl: designer.profilePicture,
-                                  seed: designer.id,
                                   onTap: () => Modular.to.pushNamed(
                                     ModularRoutes.path(
                                       ModularRoutes.primaryDesignerDetail,
@@ -148,13 +141,8 @@ class _HomeContentState extends State<HomeContent> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(12),
                             ),
-                            image: DecorationImage(
-                              image: networkOrPlaceholder(
-                                null,
-                                seed: 'home-collection-1',
-                                width: 400,
-                                height: 400,
-                              ),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/png/sitting-room.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -168,13 +156,8 @@ class _HomeContentState extends State<HomeContent> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(12),
                             ),
-                            image: DecorationImage(
-                              image: networkOrPlaceholder(
-                                null,
-                                seed: 'home-collection-2',
-                                width: 400,
-                                height: 400,
-                              ),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/png/sitting-room.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -203,13 +186,8 @@ class _HomeContentState extends State<HomeContent> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(12),
                             ),
-                            image: DecorationImage(
-                              image: networkOrPlaceholder(
-                                null,
-                                seed: 'home-feature-koishi',
-                                width: 800,
-                                height: 400,
-                              ),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/png/sitting-room.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
