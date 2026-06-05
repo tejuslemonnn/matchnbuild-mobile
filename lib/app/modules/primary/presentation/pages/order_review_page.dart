@@ -32,9 +32,7 @@ class _OrderReviewPageState extends State<OrderReviewPage> {
   void _onContinue() {
     if (widget.quotationId == null) {
       // Demo flow without a real quotation — just proceed to payment.
-      Modular.to.pushNamed(
-        ModularRoutes.path(ModularRoutes.primaryPaymentMethod),
-      );
+      Modular.to.pushNamed(ModularRoutes.primaryPaymentMethod);
       return;
     }
     _cubit.accept(widget.quotationId!);

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mnb_mobile/app/modules/primary/data/datasource/primary_remote_datasource.dart';
 import 'package:mnb_mobile/app/modules/primary/data/model/user_model.dart';
 import 'package:mnb_mobile/app/modules/primary/domain/usecase/primary_use_cases.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
@@ -9,32 +10,41 @@ class ProfileState extends Equatable {
   final UserModel? user;
   final String message;
 
+  /// Status of an update (`PATCH /user/:id`) request, tracked separately from
+  /// the initial profile load.
+  final ViewStatus saveStatus;
+
   const ProfileState({
     this.status = ViewStatus.initial,
     this.user,
     this.message = '',
+    this.saveStatus = ViewStatus.initial,
   });
 
   ProfileState copyWith({
     ViewStatus? status,
     UserModel? user,
     String? message,
+    ViewStatus? saveStatus,
   }) {
     return ProfileState(
       status: status ?? this.status,
       user: user ?? this.user,
       message: message ?? this.message,
+      saveStatus: saveStatus ?? this.saveStatus,
     );
   }
 
   @override
-  List<Object?> get props => [status, user, message];
+  List<Object?> get props => [status, user, message, saveStatus];
 }
 
 class ProfileCubit extends Cubit<ProfileState> {
   final GetCurrentUserUseCase _getCurrentUser;
+  final UpdateUserUseCase _updateUser;
 
-  ProfileCubit(this._getCurrentUser) : super(const ProfileState());
+  ProfileCubit(this._getCurrentUser, this._updateUser)
+      : super(const ProfileState());
 
   Future<void> load() async {
     emit(state.copyWith(status: ViewStatus.loading));
@@ -46,6 +56,23 @@ class ProfileCubit extends Cubit<ProfileState> {
       )),
       (user) => emit(state.copyWith(
         status: ViewStatus.success,
+        user: user,
+      )),
+    );
+  }
+
+  Future<void> update(String id, UpdateUserRequest request) async {
+    emit(state.copyWith(saveStatus: ViewStatus.loading));
+    final result = await _updateUser(
+      UpdateUserParams(id: id, request: request),
+    );
+    result.fold(
+      (failure) => emit(state.copyWith(
+        saveStatus: ViewStatus.failure,
+        message: failure.getError(),
+      )),
+      (user) => emit(state.copyWith(
+        saveStatus: ViewStatus.success,
         user: user,
       )),
     );

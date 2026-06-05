@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/app/modules/primary/data/model/design_item_model.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/design_items_cubit.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/widgets/search_content_widgets.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
+import 'package:mnb_mobile/app/widgets/inputs/inputs.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 
 class SearchContent extends StatefulWidget {
@@ -63,33 +63,10 @@ class _SearchContentState extends State<SearchContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextField(
+                  AppSearchField(
+                    hint: 'Cari desain, arsitek, atau gaya...',
                     onChanged: (value) => setState(() => _query = value),
-                    decoration: InputDecoration(
-                      hintText: 'Cari desain, arsitek, atau gaya...',
-                      hintStyle: Theme.of(context).textTheme.bodyMedium!
-                          .copyWith(
-                            fontStyle: GoogleFonts.inter().fontStyle,
-                            color: ChakraColors.gray400,
-                          ),
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: const Icon(Icons.tune),
-                      filled: true,
-                      fillColor: ChakraColors.white,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: ChakraColors.gray200),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: ChakraColors.gray200),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: ChakraColors.black),
-                      ),
-                    ),
+                    onFilterTap: () {},
                   ),
                   const SizedBox(height: 16),
                   SizedBox(

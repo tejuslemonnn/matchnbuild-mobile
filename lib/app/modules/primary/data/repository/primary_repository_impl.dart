@@ -54,6 +54,13 @@ class PrimaryRepositoryImpl extends BaseRepository implements PrimaryRepository 
       _guard(_remoteDatasource.getCurrentUser);
 
   @override
+  Future<Either<Failure, UserModel>> updateUser(
+    String id,
+    UpdateUserRequest request,
+  ) =>
+      _guard(() => _remoteDatasource.updateUser(id, request));
+
+  @override
   Future<Either<Failure, PreferenceModel?>> getMyPreferences() =>
       _guard(_remoteDatasource.getMyPreferences);
 

@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/controller/auth_bloc.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
+import 'package:mnb_mobile/app/widgets/inputs/inputs.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -102,12 +103,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _usernameController,
-                            decoration: const InputDecoration(
-                              labelText: 'Name',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Name',
+                            hint: 'Nama lengkap',
+                            isRequired: true,
+                            prefixIcon: Icons.person_outline,
+                            textInputAction: TextInputAction.next,
                             validator: (value) {
                               if (value == null || value.trim().length < 2) {
                                 return 'Name minimal 2 karakter';
@@ -116,13 +118,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _emailController,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Email',
+                            hint: 'you@example.com',
+                            isRequired: true,
+                            prefixIcon: Icons.mail_outline,
                             keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
@@ -134,13 +137,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _passwordController,
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Password',
+                            hint: 'Minimal 8 karakter',
+                            isRequired: true,
                             obscureText: true,
+                            prefixIcon: Icons.lock_outline,
+                            textInputAction: TextInputAction.next,
                             validator: (value) {
                               if (value == null || value.length < 8) {
                                 return 'Password minimal 8 karakter';
@@ -149,13 +153,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _confirmPasswordController,
-                            decoration: const InputDecoration(
-                              labelText: 'Confirm Password',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Confirm Password',
+                            hint: 'Ulangi password',
+                            isRequired: true,
                             obscureText: true,
+                            prefixIcon: Icons.lock_outline,
                             validator: (value) {
                               if (value != _passwordController.text) {
                                 return 'Password tidak cocok';
@@ -164,20 +168,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          DropdownButtonFormField<String>(
-                            initialValue: _role,
-                            decoration: const InputDecoration(
-                              labelText: 'Daftar sebagai',
-                              border: OutlineInputBorder(),
-                            ),
+                          AppDropdownField<String>(
+                            label: 'Daftar sebagai',
+                            isRequired: true,
+                            value: _role,
+                            prefixIcon: Icons.badge_outlined,
                             items: const [
-                              DropdownMenuItem(
+                              AppDropdownItem(
                                 value: 'client',
-                                child: Text('Client'),
+                                label: 'Client',
+                                icon: Icons.person_outline,
                               ),
-                              DropdownMenuItem(
+                              AppDropdownItem(
                                 value: 'designer',
-                                child: Text('Designer'),
+                                label: 'Designer',
+                                icon: Icons.architecture_outlined,
                               ),
                             ],
                             onChanged: (value) =>

@@ -37,7 +37,7 @@ class _QuoteSummaryPageState extends State<QuoteSummaryPage> {
         minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: ElevatedButton(
           onPressed: () => Modular.to.pushNamed(
-            ModularRoutes.path(ModularRoutes.primaryOrderReview),
+            ModularRoutes.primaryOrderReview,
             arguments: widget.quotationId,
           ),
           style: ElevatedButton.styleFrom(

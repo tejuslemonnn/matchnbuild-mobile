@@ -6,6 +6,7 @@ import 'package:mnb_mobile/app/modules/primary/data/datasource/primary_remote_da
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/project_request_form_cubit.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
+import 'package:mnb_mobile/app/widgets/inputs/inputs.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
 
@@ -144,80 +145,57 @@ class _PriceRequestPageState extends State<PriceRequestPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    DropdownButtonFormField<String>(
-                      initialValue: _spaceType,
-                      decoration: const InputDecoration(
-                        labelText: 'Space Type',
-                        border: OutlineInputBorder(),
-                      ),
+                    AppDropdownField<String>(
+                      label: 'Space Type',
+                      value: _spaceType,
+                      prefixIcon: Icons.chair_outlined,
                       items: const [
-                        DropdownMenuItem(
+                        AppDropdownItem(
                           value: 'Living Room',
-                          child: Text('Living Room'),
+                          label: 'Living Room',
                         ),
-                        DropdownMenuItem(
-                          value: 'Bedroom',
-                          child: Text('Bedroom'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Kitchen',
-                          child: Text('Kitchen'),
-                        ),
+                        AppDropdownItem(value: 'Bedroom', label: 'Bedroom'),
+                        AppDropdownItem(value: 'Kitchen', label: 'Kitchen'),
                       ],
                       onChanged: (value) =>
                           setState(() => _spaceType = value ?? _spaceType),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _spaceController,
+                      label: 'Estimated Space Size (m²)',
+                      hint: '36',
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Estimated Space Size (m²)',
-                        border: OutlineInputBorder(),
-                      ),
+                      prefixIcon: Icons.straighten_outlined,
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _budgetController,
+                      label: 'Initial Budget (Rupiah)',
+                      hint: '5000000',
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Initial Budget (Rupiah)',
-                        border: OutlineInputBorder(),
-                      ),
+                      prefixIcon: Icons.payments_outlined,
                     ),
                     const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      initialValue: _timeline,
-                      decoration: const InputDecoration(
-                        labelText: 'Target Timeline',
-                        border: OutlineInputBorder(),
-                      ),
+                    AppDropdownField<String>(
+                      label: 'Target Timeline',
+                      value: _timeline,
+                      prefixIcon: Icons.schedule_outlined,
                       items: const [
-                        DropdownMenuItem(
-                          value: '2 Weeks',
-                          child: Text('2 Weeks'),
-                        ),
-                        DropdownMenuItem(
-                          value: '1 Month',
-                          child: Text('1 Month'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Flexible',
-                          child: Text('Flexible'),
-                        ),
+                        AppDropdownItem(value: '2 Weeks', label: '2 Weeks'),
+                        AppDropdownItem(value: '1 Month', label: '1 Month'),
+                        AppDropdownItem(value: 'Flexible', label: 'Flexible'),
                       ],
                       onChanged: (value) =>
                           setState(() => _timeline = value ?? _timeline),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _notesController,
+                      label: 'Project Notes',
+                      hint: 'Ceritakan kebutuhan desainmu...',
                       maxLines: 5,
-                      decoration: const InputDecoration(
-                        labelText: 'Project Notes',
-                        border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
-                      ),
+                      minLines: 3,
                     ),
                     const SizedBox(height: 24),
                   ],

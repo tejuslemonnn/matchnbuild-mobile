@@ -20,6 +20,10 @@ abstract class PrimaryRepository {
   Future<Either<Failure, List<FeatureModel>>> getFeatures();
 
   Future<Either<Failure, UserModel>> getCurrentUser();
+  Future<Either<Failure, UserModel>> updateUser(
+    String id,
+    UpdateUserRequest request,
+  );
 
   Future<Either<Failure, PreferenceModel?>> getMyPreferences();
   Future<Either<Failure, PreferenceModel>> createPreferences(

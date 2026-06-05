@@ -6,6 +6,7 @@ import 'package:mnb_mobile/app/modules/primary/data/datasource/primary_remote_da
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/preferences_cubit.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/view_status.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
+import 'package:mnb_mobile/app/widgets/inputs/inputs.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
 
@@ -243,22 +244,22 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _budgetMinController,
+                      label: 'Budget Minimum (Rupiah)',
+                      hint: '100000000',
+                      isRequired: true,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Budget Minimum (Rupiah)',
-                        border: OutlineInputBorder(),
-                      ),
+                      prefixIcon: Icons.payments_outlined,
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _budgetMaxController,
+                      label: 'Budget Maksimum (Rupiah)',
+                      hint: '400000000',
+                      isRequired: true,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Budget Maksimum (Rupiah)',
-                        border: OutlineInputBorder(),
-                      ),
+                      prefixIcon: Icons.payments_outlined,
                     ),
                     const SizedBox(height: 6),
                     Text(
@@ -269,12 +270,12 @@ class _StylePreferencesPageState extends State<StylePreferencesPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    AppTextField(
                       controller: _locationController,
-                      decoration: const InputDecoration(
-                        labelText: 'Location Project',
-                        border: OutlineInputBorder(),
-                      ),
+                      label: 'Location Project',
+                      hint: 'Jakarta',
+                      isRequired: true,
+                      prefixIcon: Icons.location_on_outlined,
                     ),
                     const SizedBox(height: 24),
                   ],

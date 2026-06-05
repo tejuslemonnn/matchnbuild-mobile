@@ -17,17 +17,29 @@ class ProjectState extends Equatable {
 
   /// Requests with an unresolved status (open / quoted / waiting).
   List<ProjectRequestModel> get active => requests
-      .where((r) => r.status == 'open' || r.status == 'quoted')
+      .where(
+        (r) =>
+            r.status.toLowerCase() == 'open' ||
+            r.status.toLowerCase() == 'quoted',
+      )
       .toList();
 
   /// Accepted / completed requests.
   List<ProjectRequestModel> get done => requests
-      .where((r) => r.status == 'accepted' || r.status == 'completed')
+      .where(
+        (r) =>
+            r.status.toLowerCase() == 'accepted' ||
+            r.status.toLowerCase() == 'completed',
+      )
       .toList();
 
   /// Rejected / cancelled requests.
   List<ProjectRequestModel> get canceled => requests
-      .where((r) => r.status == 'rejected' || r.status == 'canceled')
+      .where(
+        (r) =>
+            r.status.toLowerCase() == 'rejected' ||
+            r.status.toLowerCase() == 'canceled',
+      )
       .toList();
 
   ProjectState copyWith({
@@ -55,14 +67,11 @@ class ProjectCubit extends Cubit<ProjectState> {
     emit(state.copyWith(status: ViewStatus.loading));
     final result = await _getMyRequests();
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: ViewStatus.failure,
-        message: failure.getError(),
-      )),
-      (requests) => emit(state.copyWith(
-        status: ViewStatus.success,
-        requests: requests,
-      )),
+      (failure) => emit(
+        state.copyWith(status: ViewStatus.failure, message: failure.getError()),
+      ),
+      (requests) =>
+          emit(state.copyWith(status: ViewStatus.success, requests: requests)),
     );
   }
 }

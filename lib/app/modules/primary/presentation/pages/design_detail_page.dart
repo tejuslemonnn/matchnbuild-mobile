@@ -87,7 +87,7 @@ class _DesignDetailPageState extends State<DesignDetailPage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () => Modular.to.pushNamed(
-                    ModularRoutes.path(ModularRoutes.primaryPriceRequest),
+                    ModularRoutes.primaryPriceRequest,
                     arguments: item.designerId,
                   ),
                   style: ElevatedButton.styleFrom(

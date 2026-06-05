@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mnb_mobile/app/widgets/base_body_page.dart';
+import 'package:mnb_mobile/app/widgets/inputs/inputs.dart';
 import 'package:mnb_mobile/app/modules/auth/presentation/controller/auth_bloc.dart';
+import 'package:mnb_mobile/app/modules/primary/domain/usecase/primary_use_cases.dart';
 import 'package:mnb_mobile/theme/colors.dart';
 import 'package:mnb_mobile/tool/modular_routes.dart';
 
@@ -19,12 +21,16 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _bloc = Modular.get<AuthBloc>();
+  final _getMyPreferences = Modular.get<GetMyPreferencesUseCase>();
+
+  /// True while we check `/user-preferences/me` after a successful login.
+  bool _checkingPreferences = false;
 
   @override
   initState() {
     super.initState();
-    _emailController.text = 'user@gmail.com';
-    _passwordController.text = 'password123';
+    _emailController.text = 'muhamadrizalnurohman072005@gmail.com';
+    _passwordController.text = 'rizal123';
   }
 
   @override
@@ -45,6 +51,32 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /// After login, check whether the user already has preferences. If they do,
+  /// skip onboarding and go straight to home; otherwise open the style
+  /// preferences page. A failure (e.g. 404 = belum ada) is treated as
+  /// "belum onboarding".
+  Future<void> _routeAfterLogin() async {
+    setState(() => _checkingPreferences = true);
+
+    final result = await _getMyPreferences();
+    if (!mounted) return;
+
+    final hasPreferences = result.fold(
+      (failure) => false,
+      (preference) => preference != null,
+    );
+
+    setState(() => _checkingPreferences = false);
+
+    if (hasPreferences) {
+      Modular.to.navigate(ModularRoutes.primary);
+    } else {
+      Modular.to.pushNamed(
+        ModularRoutes.path(ModularRoutes.authStylePreferences),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,9 +84,7 @@ class _LoginPageState extends State<LoginPage> {
         bloc: _bloc,
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Modular.to.pushNamed(
-              ModularRoutes.path(ModularRoutes.authStylePreferences),
-            );
+            _routeAfterLogin();
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(
               context,
@@ -62,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         builder: (context, state) {
+          final isBusy = state is AuthLoading || _checkingPreferences;
           return BaseBodyPage(
             children: [
               SliverToBoxAdapter(
@@ -98,13 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _emailController,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Email',
+                            hint: 'you@example.com',
+                            isRequired: true,
+                            prefixIcon: Icons.mail_outline,
                             keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.email],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
@@ -113,13 +146,16 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           const SizedBox(height: 16),
-                          TextFormField(
+                          AppTextField(
                             controller: _passwordController,
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
-                            ),
+                            label: 'Password',
+                            hint: '••••••••',
+                            isRequired: true,
                             obscureText: true,
+                            prefixIcon: Icons.lock_outline,
+                            textInputAction: TextInputAction.done,
+                            autofillHints: const [AutofillHints.password],
+                            onSubmitted: (_) => _onLogin(),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
@@ -131,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             width: double.infinity,
                             child: GestureDetector(
-                              onTap: state is AuthLoading ? null : _onLogin,
+                              onTap: isBusy ? null : _onLogin,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 16,
@@ -141,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 alignment: Alignment.center,
-                                child: state is AuthLoading
+                                child: isBusy
                                     ? const CircularProgressIndicator()
                                     : Text(
                                         'Login',

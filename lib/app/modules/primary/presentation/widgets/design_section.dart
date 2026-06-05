@@ -104,7 +104,7 @@ class DesignShowcaseCard extends StatelessWidget {
 
     return InkWell(
       onTap: () => Modular.to.pushNamed(
-        ModularRoutes.path(ModularRoutes.primaryDesignDetail),
+        ModularRoutes.primaryDesignDetail,
         arguments: item.id,
       ),
       borderRadius: BorderRadius.circular(12),

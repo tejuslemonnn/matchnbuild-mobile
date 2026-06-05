@@ -32,6 +32,7 @@ abstract class PrimaryRemoteDatasource {
 
   // User
   Future<UserModel> getCurrentUser();
+  Future<UserModel> updateUser(String id, UpdateUserRequest request);
 
   // User preferences
   Future<PreferenceModel?> getMyPreferences();
@@ -149,6 +150,12 @@ class PrimaryRemoteDatasourceImpl implements PrimaryRemoteDatasource {
     return UserModel.fromJson(_object(response));
   }
 
+  @override
+  Future<UserModel> updateUser(String id, UpdateUserRequest request) async {
+    final response = await _client.patch('/user/$id', data: request.toJson());
+    return UserModel.fromJson(_object(response));
+  }
+
   // ── User preferences ──────────────────────────────────────────────
 
   @override
@@ -253,6 +260,21 @@ class CreateProjectRequest {
         'area_size': areaSize,
         if (locationPhotoUrl != null) 'location_photo_url': locationPhotoUrl,
         if (layoutSketchUrl != null) 'layout_sketch_url': layoutSketchUrl,
+      };
+}
+
+/// Body for `PATCH /user/:id` (§4.3). All fields optional.
+class UpdateUserRequest {
+  final String? name;
+  final String? email;
+  final String? profilePicture;
+
+  const UpdateUserRequest({this.name, this.email, this.profilePicture});
+
+  Map<String, dynamic> toJson() => {
+        if (name != null) 'name': name,
+        if (email != null) 'email': email,
+        if (profilePicture != null) 'profile_picture': profilePicture,
       };
 }
 

@@ -12,8 +12,10 @@ import 'package:mnb_mobile/app/modules/primary/presentation/controller/profile_c
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/project_cubit.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/project_request_form_cubit.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/controller/quotation_cubit.dart';
+import 'package:mnb_mobile/app/modules/primary/data/model/user_model.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/design_detail_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/designer_detail_page.dart';
+import 'package:mnb_mobile/app/modules/primary/presentation/pages/edit_profile_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/home_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/message_detail_page.dart';
 import 'package:mnb_mobile/app/modules/primary/presentation/pages/order_review_page.dart';
@@ -48,6 +50,7 @@ class PrimaryModule extends Module {
     i.add(() => GetRecommendationsUseCase(i.get<PrimaryRepository>()));
     i.add(() => GetFeaturesUseCase(i.get<PrimaryRepository>()));
     i.add(() => GetCurrentUserUseCase(i.get<PrimaryRepository>()));
+    i.add(() => UpdateUserUseCase(i.get<PrimaryRepository>()));
     i.add(() => GetMyPreferencesUseCase(i.get<PrimaryRepository>()));
     i.add(() => CreatePreferencesUseCase(i.get<PrimaryRepository>()));
     i.add(() => UpdatePreferencesUseCase(i.get<PrimaryRepository>()));
@@ -67,7 +70,10 @@ class PrimaryModule extends Module {
     i.add(() => DesignerDetailCubit(i.get<GetDesignerByIdUseCase>()));
     i.add(() => DesignDetailCubit(i.get<GetDesignItemByIdUseCase>()));
     i.add(() => ProjectCubit(i.get<GetMyRequestsUseCase>()));
-    i.add(() => ProfileCubit(i.get<GetCurrentUserUseCase>()));
+    i.add(() => ProfileCubit(
+          i.get<GetCurrentUserUseCase>(),
+          i.get<UpdateUserUseCase>(),
+        ));
     i.add(() => ProjectRequestFormCubit(i.get<CreateProjectRequestUseCase>()));
     i.add(() => QuotationCubit(
           i.get<GetQuotationByIdUseCase>(),
@@ -84,6 +90,12 @@ class PrimaryModule extends Module {
   @override
   void routes(RouteManager r) {
     r.child(Modular.initialRoute, child: (context) => const HomePage());
+    r.child(
+      ModularRoutes.path(ModularRoutes.primaryEditProfile),
+      child: (context) => EditProfilePage(
+        user: r.args.data is UserModel ? r.args.data as UserModel : null,
+      ),
+    );
     r.child(
       ModularRoutes.path(ModularRoutes.primaryDesignerDetail),
       child: (context) => DesignerDetailPage(

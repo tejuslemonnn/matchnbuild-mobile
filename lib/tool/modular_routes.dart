@@ -7,6 +7,7 @@ class ModularRoutes {
 
   // primary
   static const primary = '/primary';
+  static const primaryEditProfile = '/primary/edit-profile';
   static const primaryDesignerDetail = '/primary/designer-detail';
   static const primaryDesignDetail = '/primary/design-detail';
   static const primaryMessageDetail = '/primary/message-detail';

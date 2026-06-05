@@ -98,9 +98,7 @@ class _HomeContentState extends State<HomeContent> {
                                   location: designer.location ?? '-',
                                   imageUrl: designer.profilePicture,
                                   onTap: () => Modular.to.pushNamed(
-                                    ModularRoutes.path(
-                                      ModularRoutes.primaryDesignerDetail,
-                                    ),
+                                    ModularRoutes.primaryDesignerDetail,
                                     arguments: designer.id,
                                   ),
                                 );

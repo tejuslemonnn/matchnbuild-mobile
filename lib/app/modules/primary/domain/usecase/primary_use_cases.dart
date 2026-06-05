@@ -82,6 +82,22 @@ class GetCurrentUserUseCase extends BaseUseCase<UserModel> {
   Future<Either<Failure, UserModel>> call() => _repository.getCurrentUser();
 }
 
+class UpdateUserUseCase extends BaseUseCaseParam<UserModel, UpdateUserParams> {
+  final PrimaryRepository _repository;
+  UpdateUserUseCase(this._repository);
+
+  @override
+  Future<Either<Failure, UserModel>> call(UpdateUserParams param) =>
+      _repository.updateUser(param.id, param.request);
+}
+
+class UpdateUserParams {
+  final String id;
+  final UpdateUserRequest request;
+
+  const UpdateUserParams({required this.id, required this.request});
+}
+
 // ── User preferences ──────────────────────────────────────────────────
 
 class GetMyPreferencesUseCase extends BaseUseCase<PreferenceModel?> {

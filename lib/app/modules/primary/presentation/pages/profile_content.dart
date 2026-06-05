@@ -169,7 +169,16 @@ class _ProfileContentState extends State<ProfileContent> {
                             ),
                             const SizedBox(height: 16),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: user == null
+                                  ? null
+                                  : () async {
+                                      final updated =
+                                          await Modular.to.pushNamed(
+                                        ModularRoutes.primaryEditProfile,
+                                        arguments: user,
+                                      );
+                                      if (updated == true) _cubit.load();
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ChakraColors.black,
                                 foregroundColor: ChakraColors.white,

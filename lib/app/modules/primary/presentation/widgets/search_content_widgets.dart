@@ -95,7 +95,7 @@ class SearchTrendingCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => Modular.to.pushNamed(
-        ModularRoutes.path(ModularRoutes.primaryDesignDetail),
+        ModularRoutes.primaryDesignDetail,
         arguments: item.id,
       ),
       child: SizedBox(
@@ -213,7 +213,7 @@ class LatestInspirationCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => Modular.to.pushNamed(
-        ModularRoutes.path(ModularRoutes.primaryDesignDetail),
+        ModularRoutes.primaryDesignDetail,
         arguments: item.id,
       ),
       child: Container(
